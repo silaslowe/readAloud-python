@@ -1,26 +1,26 @@
 [
   {
-    "model": "readAloudapi.bookvocab",
+    "model": "readAloudapi.booktopic",
     "pk": 1,
     "fields": {
-      "book": 1,
-      "vocab": 1
+      "book": 2,
+      "topic": 1
     }
   },
   {
-    "model": "readAloudapi.bookvocab",
+    "model": "readAloudapi.booktopic",
     "pk": 2,
     "fields": {
-      "book": 1,
-      "vocab": 3
+      "book": 2,
+      "topic": 3
     }
   },
   {
-    "model": "readAloudapi.bookvocab",
+    "model": "readAloudapi.booktopic",
     "pk": 3,
     "fields": {
-      "book": 2,
-      "vocab": 2
+      "book": 1,
+      "topic": 4
     }
   }
 ]

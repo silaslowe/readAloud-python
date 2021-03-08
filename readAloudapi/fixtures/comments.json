@@ -1,0 +1,12 @@
+[
+  {
+    "model": "readAloudapi.comment",
+    "pk": 1,
+    "fields": {
+      "book": 2,
+      "profile": 1,
+      "comment": "Love this book?",
+      "created_on": "2020-10-28T14:51:39.989Z"
+    }
+  }
+]
