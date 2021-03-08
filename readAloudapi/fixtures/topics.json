@@ -1,0 +1,30 @@
+[
+  {
+    "model": "readAloudapi.topic",
+    "pk": 1,
+    "fields": {
+      "topic": "Trees"
+    }
+  },
+  {
+    "model": "readAloudapi.topic",
+    "pk": 2,
+    "fields": {
+      "topic": "Signs"
+    }
+  },
+  {
+    "model": "readAloudapi.topic",
+    "pk": 3,
+    "fields": {
+      "topic": "Advanced Calculus"
+    }
+  },
+  {
+    "model": "readAloudapi.topic",
+    "pk": 4,
+    "fields": {
+      "topic": "toilet"
+    }
+  }
+]

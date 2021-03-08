@@ -1,0 +1,44 @@
+[
+  {
+    "model": "readAloudapi.book",
+    "pk": 1,
+    "fields": {
+      "profile": 1,
+      "title": "The Hungry Thing",
+      "author": "Jan Slepian, Ann Seidler",
+      "publish_year": 1968,
+      "notes": "This is a book beyond any reasonable doubt",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL24210262M-L.jpg",
+      "rating": 5,
+      "location": "library"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 2,
+    "fields": {
+      "profile": 1,
+      "title": "is it red? is it yelow? is it blue",
+      "author": "Tana Hoban",
+      "publish_year": 1972,
+      "notes": "This is a book about colors",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL4716156M-L.jpg",
+      "rating": 4,
+      "location": "house"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 3,
+    "fields": {
+      "profile": 1,
+      "title": "Of colors and things",
+      "author": "Tana Hoban",
+      "publish_year": 1970,
+      "notes": "This is a book about colors and things",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL496249M-L.jpg",
+      "rating": 5,
+      "location": "school"
+    }
+  }
+]

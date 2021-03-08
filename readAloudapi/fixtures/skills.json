@@ -1,0 +1,30 @@
+[
+  {
+    "model": "readAloudapi.skill",
+    "pk": 1,
+    "fields": {
+      "skill": "Senses"
+    }
+  },
+  {
+    "model": "readAloudapi.skill",
+    "pk": 2,
+    "fields": {
+      "skill": "Colors"
+    }
+  },
+  {
+    "model": "readAloudapi.skill",
+    "pk": 3,
+    "fields": {
+      "skill": "Letter Identification"
+    }
+  },
+  {
+    "model": "readAloudapi.skill",
+    "pk": 4,
+    "fields": {
+      "skill": "Numeracy"
+    }
+  }
+]
