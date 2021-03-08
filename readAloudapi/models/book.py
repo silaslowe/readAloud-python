@@ -9,4 +9,5 @@ class Book(models.Model):
     cover_url = models.CharField(max_length=125)
     rating = models.FloatField()
     location = models.CharField(max_length=50)
+    synopsis = models.TextField(max_length=500)
 
