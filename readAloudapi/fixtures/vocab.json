@@ -1,0 +1,10 @@
+[
+  {
+    "model": "readAloudapi.vocab",
+    "pk": "1",
+    "fields": {
+      "word": "tall",
+      "definition": "Something that is tall; unshort"
+    }
+  }
+]
