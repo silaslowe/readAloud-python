@@ -1,0 +1,12 @@
+[
+  {
+    "model": "readAloudapi.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "role": "teacher",
+      "bio": "Sad sad teacher. Sad",
+      "profile_pic": ""
+    }
+  }
+]

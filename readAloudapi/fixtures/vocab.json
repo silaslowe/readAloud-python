@@ -1,10 +1,26 @@
 [
   {
     "model": "readAloudapi.vocab",
-    "pk": "1",
+    "pk": 1,
     "fields": {
       "word": "tall",
       "definition": "Something that is tall; unshort"
+    }
+  },
+  {
+    "model": "readAloudapi.vocab",
+    "pk": 2,
+    "fields": {
+      "word": "dog",
+      "definition": "The anti-cat"
+    }
+  },
+  {
+    "model": "readAloudapi.vocab",
+    "pk": 3,
+    "fields": {
+      "word": "tree",
+      "definition": "fat grass"
     }
   }
 ]
