@@ -59,12 +59,11 @@ def register_user(request):
     )
 
     # Now save the extra info in the profile table
-    profile = Profile.objects.create(
-        bio=req_body['bio'],
-        user=new_user,
-        role=req_body['role'],
-        profile_pic=req_body['profile_pic']
-    )
+    profile = Profile()
+    profile.bio=''
+    profile.user=new_user
+    profile.role=''
+    profile.profile_pic=''
 
     # Commit the user to the database by saving it
     profile.save()
