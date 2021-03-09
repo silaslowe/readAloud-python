@@ -6,5 +6,6 @@
             "name": "readAloud",
             "database": "db.sqlite3"
         }
-    ]
+    ],
+    "python.pythonPath": "/Users/silaslowe/.local/share/virtualenvs/book-python-7ihkDfRx/bin/python"
 }
