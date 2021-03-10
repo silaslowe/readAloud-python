@@ -14,10 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import include
+from rest_framework import routers
 from django.urls import path
-from readAloudapi.views import register_user, login_user
+from readAloudapi.views import register_user, login_user, Books
+
+
+router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'books', Books, 'book')
 
 urlpatterns = [
+# Requests to http://localhost:8000/books(etc) will be routed to the appropriate function    
+    path('', include(router.urls)),
 # Requests to http://localhost:8000/register will be routed to the register_user function
     path('register', register_user),
 # Requests to http://localhost:8000/login will be routed to the login_user function
