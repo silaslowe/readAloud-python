@@ -56,6 +56,20 @@ class Books(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+    def list(self, request):
+        """Handle GET requests to books resource
+
+        Returns:
+            Response -- JSON serialized list of books
+        """
+
+        books = Book.objects.all()
+
+        serializer = BookSerializer(
+            books, many=True, context={'request': request})
+
+        return Response(serializer.data)
+
 class BookSerializer(serializers.ModelSerializer):
     """JSON serializer for books
 
