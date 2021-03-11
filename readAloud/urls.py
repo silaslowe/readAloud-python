@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf.urls import include
 from rest_framework import routers
 from django.urls import path
-from readAloudapi.views import register_user, login_user, Books, Questions
+from readAloudapi.views import register_user, login_user, Books, Questions, Vocabs
 
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'books', Books, 'book')
 router.register(r'questions', Questions, 'question')
+router.register(r'vocabs', Vocabs, 'vocab')
 
 
 urlpatterns = [

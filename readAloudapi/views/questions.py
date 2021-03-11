@@ -10,7 +10,7 @@ from readAloudapi.models import Book
 from readAloudapi.models.question import Question
 
 class Questions(ViewSet):
-    """Read Aloud books"""
+    """Read Aloud questions"""
 
     def create(self, request, pk=None):
         """Handle POST operations
