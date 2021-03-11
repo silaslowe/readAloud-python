@@ -7,7 +7,8 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from readAloudapi.models import Profile
+from django.db.models import F
+from readAloudapi.models import Profile, Topic, BookTopic, book_topic
 
 
 class Books(ViewSet):
@@ -64,11 +65,25 @@ class Books(ViewSet):
         """
 
         books = Book.objects.all()
+        book_list = []
+        for book in books:
+            # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
+            # .filter(booktopic__topic_id=F('id'))
 
-        serializer = BookSerializer(
-            books, many=True, context={'request': request})
+            topics = Topic.objects.all().filter(booktopic__book_id = book.id)
+            print(topics.query)
+            topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
 
-        return Response(serializer.data)
+            serializer = BookSerializer(book, context={'request': request})
+            d = {}
+            d.update(serializer.data)
+
+            d['topics']=topic_serializer.data
+            book_list.append(d)
+
+
+
+        return Response(book_list)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single book
@@ -84,14 +99,53 @@ class Books(ViewSet):
             #
             # The `2` at the end of the route becomes `pk`
 
+
             book = Book.objects.get(pk=pk)
+            # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
+            # .filter(booktopic__topic_id=F('id'))
+
+            topics = Topic.objects.all().filter(booktopic__book_id = book.id)
+            print(topics.query)
+            topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
+
             serializer = BookSerializer(book, context={'request': request})
-            return Response(serializer.data)
+            d = {}
+            d.update(serializer.data)
+
+            d['topics']=topic_serializer.data
+            d['id']=topic_serializer.data
+
+
+            return Response(d)
         except Book.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return HttpResponseServerError(ex)        
+            return HttpResponseServerError(ex)
 
+class TopicSerializer(serializers.ModelSerializer):
+    """JSON serializer for topics
+
+    Arguments:
+        serializer type
+    """ 
+
+    class Meta:
+        model = Topic
+        fields = ('id', 'topic') 
+
+# class BookTopicSerializer(serializers.ModelSerializer):
+#     """JSON serializer for a book's topics
+
+#     Arguments:
+#         serializer type
+#     """ 
+
+#     # topic = TopicSerializer(many=True)
+
+#     class Meta:
+#         model = BookTopic   
+#         fields = ('topic',)
+#         depth = 1
 
 class BookSerializer(serializers.ModelSerializer):
     """JSON serializer for books
@@ -100,6 +154,9 @@ class BookSerializer(serializers.ModelSerializer):
         serializer type
     """
 
+    # topic = TopicSerializer(many=True)
+    
     class Meta:
         model = Book
         fields = ('id', 'title', 'author', 'publish_year', 'notes', 'cover_url', 'rating', 'location', 'synopsis')
+        depth = 1

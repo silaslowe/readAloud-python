@@ -16,16 +16,18 @@ Including another URLconf
 from django.conf.urls import include
 from rest_framework import routers
 from django.urls import path
-from readAloudapi.views import register_user, login_user, Books, Questions, Vocabs, Skills, Topics, Comments
+from readAloudapi.views import register_user, login_user, Books, Questions, Vocabs, Skills, Topics, Comments, Profiles
 
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'books', Books, 'book')
-router.register(r'questions', Questions, 'question')
 router.register(r'vocabs', Vocabs, 'vocab')
 router.register(r'skills', Skills, 'skill')
 router.register(r'topics', Topics, 'topic')
 router.register(r'comments', Comments, 'comment')
+router.register(r'comments', Comments, 'comment')
+router.register(r'profiles', Profiles, 'profile')
+router.register(r'questions', Questions, 'question')
 
 
 
