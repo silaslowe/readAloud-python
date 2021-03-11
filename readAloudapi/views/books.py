@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from django.db.models import F
-from readAloudapi.models import Profile, Topic, Skill, book_topic, book_skill
+from readAloudapi.models import Profile, Topic, Skill, Question, book_topic, book_skill
 
 
 class Books(ViewSet):
@@ -72,15 +72,17 @@ class Books(ViewSet):
 
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
             skills = Skill.objects.all().filter(bookskill__book_id = book.id)
+            questions = Question.objects.all().filter(book_id=book.id)
             print(topics.query)
+            question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
             skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
             d = {}
             d.update(serializer.data)
-
+            d['questions']=question_serializer.data
             d['topics']=topic_serializer.data
-            d['skill']=skill_serializer.data
+            d['skills']=skill_serializer.data
             book_list.append(d)
 
 
@@ -126,6 +128,17 @@ class Books(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+class QuestionSerializer(serializers.ModelSerializer):
+    """JSON serializer for topics
+
+    Arguments:
+        serializer type
+    """ 
+
+    class Meta:
+        model = Question
+        fields = ('id', 'question', 'page') 
 
 class TopicSerializer(serializers.ModelSerializer):
     """JSON serializer for topics
