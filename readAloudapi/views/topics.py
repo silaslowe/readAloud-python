@@ -6,10 +6,10 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from readAloudapi.models.skill import Skill
+from readAloudapi.models.topic import Topic
 
-class Skills(ViewSet):
-    """Read Aloud Skills"""
+class Topics(ViewSet):
+    """Read Aloud vocab"""
 
     def create(self, request):
 
@@ -19,16 +19,16 @@ class Skills(ViewSet):
             Response -- JSON serialized vocab instance
         """
 
-        skill = Skill()
-        skill.skill = request.data['skill']
+        topic = Topic()
+        topic.topic = request.data['topic']
 
         # Try to save the new game to the database, then
         # serialize the game instance as JSON, and send the
         # JSON as a response to the client request
 
         try:
-            skill.save()
-            serializer = SkillSerializer(skill, context={'request': request})
+            topic.save()
+            serializer = TopicSerializer(topic, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED) 
 
         # If anything went wrong, catch the exception and
@@ -46,12 +46,12 @@ class Skills(ViewSet):
             Response -- JSON serialized list of games
         """
 
-        skills = Skill.objects.all()
+        topics = Topic.objects.all()
 
-        serializer = SkillSerializer(skills, many=True, context={'request': request})
+        serializer = TopicSerializer(topics, many=True, context={'request': request})
         return Response(serializer.data)
 
-class SkillSerializer(serializers.ModelSerializer):
+class TopicSerializer(serializers.ModelSerializer):
     """JSON serializer for vocab
 
     Arguments:
@@ -59,5 +59,5 @@ class SkillSerializer(serializers.ModelSerializer):
     """    
 
     class Meta: 
-        model = Skill
-        fields = ('id', 'skill')
+        model = Topic
+        fields = ('id', 'topic')
