@@ -3,3 +3,4 @@ from .auth import register_user
 from. books import Books
 from .questions import Questions
 from .vocabs import Vocabs
+from .skills import Skills
