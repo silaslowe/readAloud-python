@@ -65,6 +65,56 @@ class Comments(ViewSet):
         serializer = CommentSerializer(comments, many=True, context={'request': request})
         return Response(serializer.data)
 
+    def update(self, request, pk=None):
+        """Handle PUT requests for a question
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """        
+
+        # book = Book.objects.get(pk=request.data["bookId"])
+
+        # Does mostly the same thing as POST, but instead of
+        # creating a new instance of Question, get the question record
+        # from the database whose primary key is `pk`
+
+        comment = Comment.objects.get(pk=pk)
+        comment.comment = request.data['comment']
+        comment.profile = Profile.objects.get(user=request.auth.user)
+        comment.book = Book.objects.get(pk=request.data["bookId"])
+        comment.created_on = request.data['created_on']
+
+        #ORM for PUT method
+
+        comment.save()
+
+        # 204 status code means everything worked but the
+        # server is not sending back any data in the response
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def destroy(self, request, pk=None):
+
+        """Handle DELETE requests for a single comment
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+
+        try: 
+            question = Comment.objects.get(pk=pk)
+            question.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Comment.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        
+
 class CommentSerializer(serializers.ModelSerializer):
     """JSON serializer for vocab
 
