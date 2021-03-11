@@ -51,6 +51,17 @@ class Vocabs(ViewSet):
 
         vocabs = Vocab.objects.all()
 
+        word = self.request.query_params.get('word', None)
+
+        if word is not None:
+            def word_filter(vocab):
+                if vocab.word == word:
+                    return True
+                return False
+            
+            vocabs = filter(word_filter, vocabs)
+
+
         serializer = VocabSerializer(vocabs, many=True, context={'request': request})
         return Response(serializer.data)
 
