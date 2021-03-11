@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from django.db.models import F
-from readAloudapi.models import Profile, Topic, BookTopic, book_topic
+from readAloudapi.models import Profile, Topic, Skill, book_topic, book_skill
 
 
 class Books(ViewSet):
@@ -71,14 +71,16 @@ class Books(ViewSet):
             # .filter(booktopic__topic_id=F('id'))
 
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
+            skills = Skill.objects.all().filter(bookskill__book_id = book.id)
             print(topics.query)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
-
+            skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
             d = {}
             d.update(serializer.data)
 
             d['topics']=topic_serializer.data
+            d['skill']=skill_serializer.data
             book_list.append(d)
 
 
@@ -105,15 +107,18 @@ class Books(ViewSet):
             # .filter(booktopic__topic_id=F('id'))
 
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
-            print(topics.query)
+            skills = Skill.objects.all().filter(bookskill__book_id = book.id)
+            # print(topics.query)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
-
+            skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
             d = {}
             d.update(serializer.data)
 
             d['topics']=topic_serializer.data
-            d['id']=topic_serializer.data
+            d['skills']=skill_serializer.data
+
+
 
 
             return Response(d)
@@ -132,6 +137,17 @@ class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
         fields = ('id', 'topic') 
+
+class SkillSerializer(serializers.ModelSerializer):
+    """JSON serializer for topics
+
+    Arguments:
+        serializer type
+    """ 
+
+    class Meta:
+        model = Skill
+        fields = ('id', 'skill') 
 
 # class BookTopicSerializer(serializers.ModelSerializer):
 #     """JSON serializer for a book's topics
