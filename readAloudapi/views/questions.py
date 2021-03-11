@@ -66,6 +66,32 @@ class Questions(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+    def update(self, request, pk=None):
+        """Handle PUT requests for a question
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """        
+
+        # book = Book.objects.get(pk=request.data["bookId"])
+
+        # Does mostly the same thing as POST, but instead of
+        # creating a new instance of Question, get the question record
+        # from the database whose primary key is `pk`
+
+        question = Question.objects.get(pk=pk)
+        question.question = request.data['question']
+        question.page = request.data['page']
+        question.book = Book.objects.get(pk=request.data["bookId"])
+
+        #ORM for PUT method
+
+        question.save()
+
+        # 204 status code means everything worked but the
+        # server is not sending back any data in the response
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
 class QuestionSerializer(serializers.ModelSerializer):
