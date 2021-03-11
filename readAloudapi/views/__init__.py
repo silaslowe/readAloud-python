@@ -5,3 +5,4 @@ from .questions import Questions
 from .vocabs import Vocabs
 from .skills import Skills
 from .topics import Topics
+from .comments import Comments
