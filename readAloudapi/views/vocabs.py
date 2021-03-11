@@ -23,6 +23,7 @@ class Vocabs(ViewSet):
         vocab.word = request.data['word']
         vocab.definition = request.data['definition']    
         vocab.page = request.data['page']
+        vocab.notes = request.data['notes']
 
         # Try to save the new game to the database, then
         # serialize the game instance as JSON, and send the
@@ -39,6 +40,18 @@ class Vocabs(ViewSet):
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+    def list(self, request):
+
+        """Handle GET requests to games resource
+
+        Returns:
+            Response -- JSON serialized list of games
+        """
+
+        vocabs = Vocab.objects.all()
+
+
         
 class VocabSerializer(serializers.ModelSerializer):
     """JSON serializer for vocab
@@ -49,4 +62,4 @@ class VocabSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vocab
-        fields = ('id', 'word', 'definition', 'page')
+        fields = ('id', 'word', 'definition', 'page', 'notes')
