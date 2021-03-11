@@ -7,7 +7,8 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from readAloudapi.models import Profile
+from django.db.models import F
+from readAloudapi.models import Profile, Topic, BookTopic, book_topic
 
 
 class Books(ViewSet):
@@ -84,14 +85,52 @@ class Books(ViewSet):
             #
             # The `2` at the end of the route becomes `pk`
 
+
             book = Book.objects.get(pk=pk)
+            # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
+
+
+            topics = Topic.objects.all().filter(booktopic__book_id = book.id)
+            print(topics.query)
+            topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
+
             serializer = BookSerializer(book, context={'request': request})
-            return Response(serializer.data)
+            d = {}
+            d.update(serializer.data)
+
+            d['topics']=topic_serializer.data
+
+
+            return Response(d)
         except Book.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return HttpResponseServerError(ex)        
+            return HttpResponseServerError(ex)
 
+class TopicSerializer(serializers.ModelSerializer):
+    """JSON serializer for topics
+
+    Arguments:
+        serializer type
+    """ 
+
+    class Meta:
+        model = Topic
+        fields = ('topic',) 
+
+# class BookTopicSerializer(serializers.ModelSerializer):
+#     """JSON serializer for a book's topics
+
+#     Arguments:
+#         serializer type
+#     """ 
+
+#     # topic = TopicSerializer(many=True)
+
+#     class Meta:
+#         model = BookTopic   
+#         fields = ('topic',)
+#         depth = 1
 
 class BookSerializer(serializers.ModelSerializer):
     """JSON serializer for books
@@ -100,6 +139,9 @@ class BookSerializer(serializers.ModelSerializer):
         serializer type
     """
 
+    # topic = TopicSerializer(many=True)
+    
     class Meta:
         model = Book
         fields = ('id', 'title', 'author', 'publish_year', 'notes', 'cover_url', 'rating', 'location', 'synopsis')
+        depth = 1
