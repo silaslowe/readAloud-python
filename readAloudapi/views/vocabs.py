@@ -51,6 +51,9 @@ class Vocabs(ViewSet):
 
         vocabs = Vocab.objects.all()
 
+        serializer = VocabSerializer(vocabs, many=True, context={'request': request})
+        return Response(serializer.data)
+
 
         
 class VocabSerializer(serializers.ModelSerializer):
