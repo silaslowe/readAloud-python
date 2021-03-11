@@ -1,5 +1,4 @@
 """View module for handling requests about games"""
-from readAloudapi.models.question import Question
 from django.core.exceptions import ValidationError
 from rest_framework import status
 from django.http import HttpResponseServerError
@@ -8,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from readAloudapi.models import Book
+from readAloudapi.models.question import Question
 
 class Questions(ViewSet):
     """Read Aloud books"""
@@ -30,6 +30,41 @@ class Questions(ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+    def list(self, request):
+        """Handle GET requests to question resource
+
+        Returns:
+            Response -- JSON serialized list of questions
+        """        
+
+        questions = Question.objects.all()
+
+        serializer = QuestionSerializer(
+            questions, many=True, context={'request':request})
+        return Response(serializer.data)
+
+
+    def destroy(self, request, pk=None):
+
+        """Handle DELETE requests for a single question
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+
+        try: 
+            question = Question.objects.get(pk=pk)
+            question.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Question.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 
