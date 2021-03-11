@@ -65,11 +65,25 @@ class Books(ViewSet):
         """
 
         books = Book.objects.all()
+        book_list = []
+        for book in books:
+            # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
+            # .filter(booktopic__topic_id=F('id'))
 
-        serializer = BookSerializer(
-            books, many=True, context={'request': request})
+            topics = Topic.objects.all().filter(booktopic__book_id = book.id)
+            print(topics.query)
+            topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
 
-        return Response(serializer.data)
+            serializer = BookSerializer(book, context={'request': request})
+            d = {}
+            d.update(serializer.data)
+
+            d['topics']=topic_serializer.data
+            book_list.append(d)
+
+
+
+        return Response(book_list)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single book
@@ -88,7 +102,7 @@ class Books(ViewSet):
 
             book = Book.objects.get(pk=pk)
             # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
-
+            # .filter(booktopic__topic_id=F('id'))
 
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
             print(topics.query)
@@ -99,6 +113,7 @@ class Books(ViewSet):
             d.update(serializer.data)
 
             d['topics']=topic_serializer.data
+            d['id']=topic_serializer.data
 
 
             return Response(d)
@@ -116,7 +131,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Topic
-        fields = ('topic',) 
+        fields = ('id', 'topic') 
 
 # class BookTopicSerializer(serializers.ModelSerializer):
 #     """JSON serializer for a book's topics
