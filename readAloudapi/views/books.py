@@ -70,18 +70,26 @@ class Books(ViewSet):
             # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
             # .filter(booktopic__topic_id=F('id'))
 
+            # Gets all resources needed from database and filters the relevant rows
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
             skills = Skill.objects.all().filter(bookskill__book_id = book.id)
             questions = Question.objects.all().filter(book_id=book.id)
             vocabs = Vocab.objects.all().filter(bookvocab__book_id=book.id)
-            print(topics.query)
+
+            # Serialize filtered data
             question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
             skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
             vocab_serializer = VocabSerializer(vocabs, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
+
+            # Create an empty dictionary to hold copy of serialized data
             d = {}
+
+            # Copy data into empty dicitonary
             d.update(serializer.data)
+
+            # Add each set of serialized data as a property 
             d['vocab']=vocab_serializer.data
             d['questions']=question_serializer.data
             d['topics']=topic_serializer.data
@@ -111,19 +119,26 @@ class Books(ViewSet):
             # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
             # .filter(booktopic__topic_id=F('id'))
 
+            # Gets all resources needed from database and filters the relevant rows
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
             skills = Skill.objects.all().filter(bookskill__book_id = book.id)
             questions = Question.objects.all().filter(book_id=book.id)
             vocabs = Vocab.objects.all().filter(bookvocab__book_id=book.id)
 
-            # print(topics.query)
+            # Serialize filtered data
             question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
             skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
             vocab_serializer = VocabSerializer(vocabs, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
+
+            # Create an empty dictionary to hold copy of serialized data
             d = {}
+
+            # Copy data into empty dicitonary
             d.update(serializer.data)
+
+            # Add each set of serialized data as a property 
             d['vocab']=vocab_serializer.data
             d['questions']=question_serializer.data
             d['topics']=topic_serializer.data
@@ -186,8 +201,6 @@ class BookSerializer(serializers.ModelSerializer):
     Arguments:
         serializer type
     """
-
-    # topic = TopicSerializer(many=True)
     
     class Meta:
         model = Book
