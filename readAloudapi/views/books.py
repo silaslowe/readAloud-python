@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from django.db.models import F
-from readAloudapi.models import Profile, Topic, Skill, Question, book_topic, book_skill
+from readAloudapi.models import Profile, Topic, Skill, Question, Vocab, book_topic, book_skill
 
 
 class Books(ViewSet):
@@ -73,13 +73,16 @@ class Books(ViewSet):
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
             skills = Skill.objects.all().filter(bookskill__book_id = book.id)
             questions = Question.objects.all().filter(book_id=book.id)
+            vocabs = Vocab.objects.all().filter(bookvocab__book_id=book.id)
             print(topics.query)
             question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
             skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
+            vocab_serializer = VocabSerializer(vocabs, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
             d = {}
             d.update(serializer.data)
+            d['vocab']=vocab_serializer.data
             d['questions']=question_serializer.data
             d['topics']=topic_serializer.data
             d['skills']=skill_serializer.data
@@ -111,26 +114,37 @@ class Books(ViewSet):
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
             skills = Skill.objects.all().filter(bookskill__book_id = book.id)
             questions = Question.objects.all().filter(book_id=book.id)
+            vocabs = Vocab.objects.all().filter(bookvocab__book_id=book.id)
 
             # print(topics.query)
             question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
             skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
+            vocab_serializer = VocabSerializer(vocabs, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
             d = {}
             d.update(serializer.data)
+            d['vocab']=vocab_serializer.data
             d['questions']=question_serializer.data
             d['topics']=topic_serializer.data
             d['skills']=skill_serializer.data
-
-
-
 
             return Response(d)
         except Book.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+class VocabSerializer(serializers.ModelSerializer):
+    """JSON serializer for topics
+
+    Arguments:
+        serializer type
+    """ 
+
+    class Meta:
+        model = Vocab
+        fields = ('id', 'word', 'page') 
 
 class QuestionSerializer(serializers.ModelSerializer):
     """JSON serializer for topics
@@ -165,19 +179,6 @@ class SkillSerializer(serializers.ModelSerializer):
         model = Skill
         fields = ('id', 'skill') 
 
-# class BookTopicSerializer(serializers.ModelSerializer):
-#     """JSON serializer for a book's topics
-
-#     Arguments:
-#         serializer type
-#     """ 
-
-#     # topic = TopicSerializer(many=True)
-
-#     class Meta:
-#         model = BookTopic   
-#         fields = ('topic',)
-#         depth = 1
 
 class BookSerializer(serializers.ModelSerializer):
     """JSON serializer for books
