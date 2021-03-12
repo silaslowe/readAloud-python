@@ -110,13 +110,16 @@ class Books(ViewSet):
 
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
             skills = Skill.objects.all().filter(bookskill__book_id = book.id)
+            questions = Question.objects.all().filter(book_id=book.id)
+
             # print(topics.query)
+            question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
             topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
             skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
             serializer = BookSerializer(book, context={'request': request})
             d = {}
             d.update(serializer.data)
-
+            d['questions']=question_serializer.data
             d['topics']=topic_serializer.data
             d['skills']=skill_serializer.data
 
