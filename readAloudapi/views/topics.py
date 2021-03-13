@@ -1,5 +1,4 @@
 """View module for handling requests about games"""
-from readAloudapi.models.book_topic import BookTopic
 from django.core.exceptions import ValidationError
 from rest_framework import status
 from django.http import HttpResponseServerError
@@ -7,8 +6,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from readAloudapi.models.topic import Topic
 from readAloudapi.models.book import Book
+from readAloudapi.models.topic import Topic
+from readAloudapi.models.book_topic import BookTopic
 
 class Topics(ViewSet):
     """Read Aloud vocab"""
@@ -27,8 +27,6 @@ class Topics(ViewSet):
         # Try to save the new game to the database, then
         # serialize the game instance as JSON, and send the
         # JSON as a response to the client request
-
-             
 
         # If anything went wrong, catch the exception and
         # send a response with a 400 status code to tell the
