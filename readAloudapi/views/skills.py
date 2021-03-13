@@ -6,7 +6,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from readAloudapi.models.book import Book
 from readAloudapi.models.skill import Skill
+from readAloudapi.models.book_skill import BookSkill
 
 class Skills(ViewSet):
     """Read Aloud Skills"""
@@ -19,24 +21,28 @@ class Skills(ViewSet):
             Response -- JSON serialized vocab instance
         """
 
-        skill = Skill()
-        skill.skill = request.data['skill']
-
-        # Try to save the new game to the database, then
-        # serialize the game instance as JSON, and send the
-        # JSON as a response to the client request
-
+        
+        book = Book.objects.get(pk=request.data['bookId'])
+        
         try:
-            skill.save()
-            serializer = SkillSerializer(skill, context={'request': request})
-            return Response(serializer.data, status=status.HTTP_201_CREATED) 
+            skill = Skill.objects.get(skill=request.data['skill'])
 
-        # If anything went wrong, catch the exception and
-        # send a response with a 400 status code to tell the
-        # client that something was wrong with its request data   
+        except Skill.DoesNotExist:
+            skill = Skill()
+            skill.skill= request.data['skill']
+            skill.save()
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+        bookskill = BookSkill() 
+        bookskill.book = book
+        bookskill.skill = skill
+        bookskill.save()
+
+        serializer = SkillSerializer(skill, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
     def list(self, request):
 
