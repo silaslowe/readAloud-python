@@ -39,6 +39,7 @@ class Skills(ViewSet):
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+        
         # Creates a relationship object between the current book and the skill
         bookskill = BookSkill() 
         bookskill.book = book

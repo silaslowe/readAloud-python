@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from readAloudapi.models.vocab import Vocab
+from readAloudapi.models.book import Book
+from readAloudapi.models.book_vocab import BookVocab
 
 class Vocabs(ViewSet):
     """Read Aloud vocab"""
@@ -19,11 +21,15 @@ class Vocabs(ViewSet):
             Response -- JSON serialized vocab instance
         """
 
+        book = Book.objects.get(pk=request.data['bookId'])
+
         vocab = Vocab()
         vocab.word = request.data['word']
         vocab.definition = request.data['definition']    
         vocab.page = request.data['page']
         vocab.notes = request.data['notes']
+
+
 
         # Try to save the new game to the database, then
         # serialize the game instance as JSON, and send the
@@ -31,9 +37,15 @@ class Vocabs(ViewSet):
 
         try:
             vocab.save()
-            serializer = VocabSerializer(vocab, context={'request': request})
-            return Response(serializer.data, status=status.HTTP_201_CREATED) 
+    
+            # Create a book vocab relationship
+            bookvocab = BookVocab()
+            bookvocab.book = book
+            bookvocab.vocab = vocab
+            bookvocab.save()    
 
+            serializer = VocabSerializer(vocab, context={'request': request})
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         # If anything went wrong, catch the exception and
         # send a response with a 400 status code to tell the
         # client that something was wrong with its request data   
