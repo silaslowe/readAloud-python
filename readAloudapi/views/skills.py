@@ -21,25 +21,31 @@ class Skills(ViewSet):
             Response -- JSON serialized vocab instance
         """
 
-        
+        # Gets book from request.data
         book = Book.objects.get(pk=request.data['bookId'])
         
         try:
+            # Attempts to get skill from db. 
             skill = Skill.objects.get(skill=request.data['skill'])
 
         except Skill.DoesNotExist:
+
+            # If skill not in db creates a new instance of the skill model
             skill = Skill()
+            # Adds a skill property to the instance
             skill.skill= request.data['skill']
+            # Create ORM
             skill.save()
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
-
+        # Creates a relationship object between the current book and the skill
         bookskill = BookSkill() 
         bookskill.book = book
         bookskill.skill = skill
         bookskill.save()
 
+        # Serializes the skill data to send to the client in the response    
         serializer = SkillSerializer(skill, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

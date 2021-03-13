@@ -20,31 +20,35 @@ class Topics(ViewSet):
         Returns:
             Response -- JSON serialized vocab instance
         """
+
+        # Gets book from request.data
         book = Book.objects.get(pk=request.data['bookId'])
+
         try:
+            # Attempts to get topic from db. 
             topic = Topic.objects.get(topic=request.data['topic'])
 
-        # Try to save the new game to the database, then
-        # serialize the game instance as JSON, and send the
-        # JSON as a response to the client request
-
-        # If anything went wrong, catch the exception and
-        # send a response with a 400 status code to tell the
-        # client that something was wrong with its request data   
 
         except Topic.DoesNotExist:
+
+            # If skill not in db creates a new instance of the skill model
             topic = Topic()
+            # Adds a skill property to the instance
             topic.topic = request.data['topic']
+            # Create ORM
             topic.save()
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Creates a relationship object between the current book and the topic
         booktopic = BookTopic()
         booktopic.book=book
         booktopic.topic=topic
         booktopic.save()
 
+
+        # Serializes the skill data to send to the client in the response 
         serializer = TopicSerializer(topic, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
