@@ -54,8 +54,8 @@ def register_user(request):
         username=req_body['username'],
         email=req_body['email'],
         password=req_body['password'],
-        first_name=req_body['first_name'],
-        last_name=req_body['last_name']
+        first_name=req_body['firstName'],
+        last_name=req_body['lastName']
     )
 
     # Now save the extra info in the profile table
@@ -72,5 +72,5 @@ def register_user(request):
     token = Token.objects.create(user=new_user)
 
     # Return the token to the client
-    data = json.dumps({"token": token.key})
+    data = json.dumps({"valid": True, "token": token.key})
     return HttpResponse(data, content_type='application/json')
