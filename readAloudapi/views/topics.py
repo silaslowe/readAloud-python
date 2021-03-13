@@ -53,7 +53,6 @@ class Topics(ViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-
     def list(self, request):
 
         """Handle GET requests to games resource
