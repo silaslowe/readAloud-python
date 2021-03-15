@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from readAloudapi.models import Book
+from rest_framework.decorators import action
 from readAloudapi.models.profile import Profile
 from django.contrib.auth.models import User
 
@@ -27,45 +28,35 @@ class Profiles(ViewSet):
             profiles, many=True, context={'request':request})
         return Response(serializer.data)
 
-
-
-    # def update(self, request, pk=None):
-    #     """Handle PUT requests for a profile
+    # def retrieve(self, request, pk=None):
+    #     """Handle GET requests for single tag
 
     #     Returns:
-    #         Response -- Empty body with 204 status code
-    #     """        
+    #         Response -- JSON serialized tag instance
+    #     """
 
-    #     # book = Book.objects.get(pk=request.data["bookId"])
-
-    #     # Does mostly the same thing as POST, but instead of
-    #     # creating a new instance of Profile, get the profile record
-    #     # from the database whose primary key is `pk`
-
-    #     user = User.objects.get(user=request.auth.user)
-
-
-    #     profile = Profile.objects.get(pk=pk)
-
-
-
-
-    #     class Profile(models.Model):
-    #     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #     role = models.CharField(max_length=25)
-    #     bio = models.CharField(max_length=500)
-    #     profile_pic = models.ImageField(upload_to='porfile_pics', height_field=None,width_field=None, max_length=None, null=True)
-
-
-    #     #ORM for PUT method
-
-    #     question.save()
-
-    #     # 204 status code means everything worked but the
-    #     # server is not sending back any data in the response
-
-    #     return Response({}, status=status.HTTP_204_NO_CONTENT)
+    #     if pk == None:
+    #         active_user = Profile.objects.get(user=request.auth.user)
+    #     else:
+    #         active_user = Profile.objects.get(pk=pk)
      
+    #     serializer = ProfileSerializer(active_user, context={'request': request}, many=False)
+    #     return Response(serializer.data)
+
+    @action(methods=['GET',], detail=True)
+    def current_profile(self, request):
+        """Handle GET requests to profile resource
+
+        Returns:
+            Response -- JSON representation of user info
+        """
+
+        profile = Profile.objects.get(user=request.auth.user)
+
+        profile = ProfileSerializer(profile, many=False, constext={'request': request})
+
+        return Response(profile)
+
 
 class UserSerializer(serializers.ModelSerializer):
     """JSON serializer for Users
