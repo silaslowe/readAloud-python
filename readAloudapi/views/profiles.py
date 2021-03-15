@@ -43,7 +43,7 @@ class Profiles(ViewSet):
     #     serializer = ProfileSerializer(active_user, context={'request': request}, many=False)
     #     return Response(serializer.data)
 
-    @action(methods=['GET',], detail=True)
+    @action(methods=['GET'], detail=False)
     def current_profile(self, request):
         """Handle GET requests to profile resource
 
@@ -53,9 +53,9 @@ class Profiles(ViewSet):
 
         profile = Profile.objects.get(user=request.auth.user)
 
-        profile = ProfileSerializer(profile, many=False, constext={'request': request})
+        profile = ProfileSerializer(profile, many=False, context={'request': request})
 
-        return Response(profile)
+        return Response(profile.data)
 
 
 class UserSerializer(serializers.ModelSerializer):
