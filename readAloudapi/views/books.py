@@ -7,6 +7,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.decorators import action
 from django.db.models import F
 from readAloudapi.models import Profile, Topic, Skill, Question, Vocab, book_topic, book_skill
 
@@ -34,11 +35,11 @@ class Books(ViewSet):
         book.title = request.data["title"]
         book.author = request.data["author"]
         book.publish_year =request.data["publishYear"]
-        book.notes = request.data["notes"]
+        book.notes = ""
         book.cover_url = request.data["coverUrl"] 
-        book.rating = request.data["rating"]
-        book.location = request.data["location"]
-        book.synopsis = request.data["synopsis"]
+        book.rating = 0
+        book.location = ""
+        book.synopsis = ""
 
 
         # Try to save the new book to the database, then
@@ -56,6 +57,30 @@ class Books(ViewSet):
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        """Handle PUT requests for a book
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+
+        book = Book.objects.get(pk=pk)
+        profile = Profile.objects.get(user=request.auth.user)
+
+        book.profile = profile
+        book.title = request.data["title"]
+        book.author = request.data["author"]
+        book.publish_year = book.publish_year
+        book.notes = request.data["notes"]
+        book.cover_url = book.cover_url 
+        book.rating = request.data["rating"]
+        book.location = request.data["location"]
+        book.synopsis = request.data["synopsis"]
+
+        book.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def list(self, request):
         """Handle GET requests to books resource
@@ -150,6 +175,23 @@ class Books(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
+    @action(methods=['GET'], detail=False)
+    def books_by_current_profile(self, request):
+        """Handle GET requests to profile resource
+
+        Returns:
+            Response -- JSON representation of user info
+        """
+
+        profile = Profile.objects.get(user=request.auth.user)
+
+        books = Book.objects.filter(profile_id = profile.id)
+
+        books = BookSerializer(books, many=True, context={'request': request})
+
+        return Response(books.data)
+
+
 class VocabSerializer(serializers.ModelSerializer):
     """JSON serializer for topics
 
@@ -159,7 +201,7 @@ class VocabSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vocab
-        fields = ('id', 'word', 'page') 
+        fields = ('id', 'word', 'page', 'definition') 
 
 class QuestionSerializer(serializers.ModelSerializer):
     """JSON serializer for topics
