@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.decorators import action
 from readAloudapi.models.book import Book
 from readAloudapi.models.skill import Skill
 from readAloudapi.models.book_skill import BookSkill
@@ -50,6 +51,32 @@ class Skills(ViewSet):
         serializer = SkillSerializer(skill, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @action(methods=['POST'], detail=False)
+    def get_skills_by_book(self, request):
+        """Handle GET skills by book
+
+        Returns:
+            Response -- JSON serialized list of skills
+        """
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        skills = Skill.objects.all().filter(bookskill__book_id = book.id)
+
+        serializer = SkillSerializer(skills, many=True, context={'request': request})
+
+        return Response(serializer.data)
+
+    @action(methods=['DELETE'], detail=False)
+    def destroy_skill_book_relationship(self, request):
+        """Handle DELETE skills/book releationship"""
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        skill = Skill.objects.get(pk=request.data["skillId"])
+        book_skill_rel = BookSkill.objects.all().filter(book_id = book.id, skill_id = skill.id)
+
+        book_skill_rel.delete()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def list(self, request):
 

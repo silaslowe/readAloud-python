@@ -58,22 +58,35 @@ class Topics(ViewSet):
         """Handle GET topics by book
 
         Returns:
-            Response -- JSON serialized list of games
+            Response -- JSON serialized list of topics
         """
 
         book = Book.objects.get(pk=request.data["bookId"])
         topics = Topic.objects.all().filter(booktopic__book_id = book.id)
 
         serializer = TopicSerializer(topics, many=True, context={'request': request})
-        
+
         return Response(serializer.data)
+
+    @action(methods=['DELETE'], detail=False)
+    def destroy_topic_book_relationship(self, request):
+        """Handle DELETE topics/book releationship"""
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        topic = Topic.objects.get(pk=request.data["topicId"])
+        book_topic_rel = BookTopic.objects.all().filter(book_id = book.id, topic_id = topic.id)
+
+        book_topic_rel.delete()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
 
     def list(self, request):
 
-        """Handle GET requests to games resource
+        """Handle GET requests to topics resource
 
         Returns:
-            Response -- JSON serialized list of games
+            Response -- JSON serialized list of topics
         """
 
         topics = Topic.objects.all()
