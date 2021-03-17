@@ -65,6 +65,7 @@ class Topics(ViewSet):
         topics = Topic.objects.all().filter(booktopic__book_id = book.id)
 
         serializer = TopicSerializer(topics, many=True, context={'request': request})
+        
         return Response(serializer.data)
 
     def list(self, request):
