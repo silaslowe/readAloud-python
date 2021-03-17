@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.decorators import action
 from readAloudapi.models.vocab import Vocab
 from readAloudapi.models.book import Book
 from readAloudapi.models.book_vocab import BookVocab
@@ -77,6 +78,20 @@ class Vocabs(ViewSet):
         serializer = VocabSerializer(vocabs, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @action(methods=['POST'], detail=False)
+    def get_vocab_by_book(self, request):
+        """Handle GET vocabs by book
+
+        Returns:
+            Response -- JSON serialized list of vocabs
+        """
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        vocabs = Vocab.objects.all().filter(bookvocab__book_id = book.id)
+
+        serializer = VocabSerializer(vocabs, many=True, context={'request': request})
+
+        return Response(serializer.data)
 
     def destroy(self, request, pk=None):
         try:
