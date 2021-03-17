@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.decorators import action
 from readAloudapi.models.book import Book
 from readAloudapi.models.topic import Topic
 from readAloudapi.models.book_topic import BookTopic
@@ -52,6 +53,19 @@ class Topics(ViewSet):
         serializer = TopicSerializer(topic, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @action(methods=['POST'], detail=False)
+    def get_topics_by_book(self, request):
+        """Handle GET topics by book
+
+        Returns:
+            Response -- JSON serialized list of games
+        """
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        topics = Topic.objects.all().filter(booktopic__book_id = book.id)
+
+        serializer = TopicSerializer(topics, many=True, context={'request': request})
+        return Response(serializer.data)
 
     def list(self, request):
 
