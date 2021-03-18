@@ -60,7 +60,7 @@ class Skills(ViewSet):
         """
 
         book = Book.objects.get(pk=request.data["bookId"])
-        skills = Skill.objects.all().filter(bookskill__book_id = book.id)
+        skills = Skill.objects.filter(books__book_id = book.id)
 
         serializer = SkillSerializer(skills, many=True, context={'request': request})
 
