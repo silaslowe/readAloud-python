@@ -143,10 +143,10 @@ class Books(ViewSet):
             # .filter(booktopic__topic_id=F('id'))
 
             # Gets all resources needed from database and filters the relevant rows
-            topics = Topic.objects.all().filter(booktopic__book_id = book.id)
-            skills = Skill.objects.all().filter(books = book.id)
-            questions = Question.objects.all().filter(book_id = book.id)
-            vocabs = Vocab.objects.all().filter(bookvocab__book_id = book.id)
+            topics = Topic.objects.filter(books__book_id = book.id)
+            skills = Skill.objects.filter(books__book_id = book.id)
+            questions = Question.objects.filter(book_id = book.id)
+            vocabs = Vocab.objects.filter(bookvocab__book_id = book.id)
 
             # Serialize filtered data
             question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
@@ -186,10 +186,15 @@ class Books(ViewSet):
         books = Book.objects.filter(profile_id = profile.id)
 
         searched_skill = self.request.query_params.get('skill', None)
+        searched_topic = self.request.query_params.get('topic', None)
 
         if searched_skill is not None:
             skill = Skill.objects.get(skill = searched_skill)
             books = books.filter(skills__skill = skill)
+        
+        if searched_topic is not None:
+            topic = Topic.objects.get(topic = searched_topic)
+            books = books.filter(topic__topic = topic)
 
 
         books = BookSerializer(books, many=True, context={'request': request})

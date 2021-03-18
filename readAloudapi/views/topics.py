@@ -62,7 +62,7 @@ class Topics(ViewSet):
         """
 
         book = Book.objects.get(pk=request.data["bookId"])
-        topics = Topic.objects.all().filter(booktopic__book_id = book.id)
+        topics = Topic.objects.all().filter(books__book_id = book.id)
 
         serializer = TopicSerializer(topics, many=True, context={'request': request})
 
