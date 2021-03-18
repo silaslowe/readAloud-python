@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.decorators import action
 from readAloudapi.models.vocab import Vocab
 from readAloudapi.models.book import Book
 from readAloudapi.models.book_vocab import BookVocab
@@ -77,6 +78,41 @@ class Vocabs(ViewSet):
         serializer = VocabSerializer(vocabs, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @action(methods=['POST'], detail=False)
+    def get_vocab_by_book(self, request):
+        """Handle GET vocabs by book
+
+        Returns:
+            Response -- JSON serialized list of vocabs
+        """
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        vocabs = Vocab.objects.all().filter(bookvocab__book_id = book.id)
+
+        serializer = VocabSerializer(vocabs, many=True, context={'request': request})
+
+        return Response(serializer.data)
+
+    @action(methods=['DELETE'], detail=False)
+    def destroy_vocab_book_rel(self, request):
+        """Handle Delete vocab-book relationship"""
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        vocab = Vocab.objects.get(pk=request.data["vocabId"])
+
+        book_vocab_rel = BookVocab.objects.all().filter(book_id = book.id, vocab_id = vocab.id)
+
+        try:
+            book_vocab_rel.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Vocab.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def destroy(self, request, pk=None):
         try:
@@ -91,7 +127,34 @@ class Vocabs(ViewSet):
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def update(self, request, pk=None):
+        """Handle PUT requests for a vocab word
 
+        Returns:
+            Response -- Empty body with 204 status code
+        """        
+
+
+        # Does mostly the same thing as POST, but instead of
+        # creating a new instance of Vocab, get the question record
+        # from the database whose primary key is `pk`
+
+        vocab = Vocab.objects.get(pk=pk)
+        vocab.word = request.data['word']
+        vocab.definition = request.data['definition']
+        vocab.notes = request.data['notes']
+        vocab.page = request.data['page']
+        
+        #ORM for PUT method
+
+        vocab.save()
+
+        # 204 status code means everything worked but the
+        # server is not sending back any data in the response
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        
 class VocabSerializer(serializers.ModelSerializer):
     """JSON serializer for vocab
 
