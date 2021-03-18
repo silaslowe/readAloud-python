@@ -93,6 +93,27 @@ class Vocabs(ViewSet):
 
         return Response(serializer.data)
 
+    @action(methods=['DELETE'], detail=False)
+    def destroy_vocab_book_rel(self, request):
+        """Handle Delete vocab-book relationship"""
+
+        book = Book.objects.get(pk=request.data["bookId"])
+        vocab = Vocab.objects.get(pk=request.data["vocabId"])
+
+        book_vocab_rel = BookVocab.objects.all().filter(book_id = book.id, vocab_id = vocab.id)
+
+        try:
+            book_vocab_rel.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Vocab.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
     def destroy(self, request, pk=None):
         try:
             vocab = Vocab.objects.get(pk=pk)
