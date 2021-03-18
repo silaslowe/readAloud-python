@@ -144,7 +144,7 @@ class Books(ViewSet):
 
             # Gets all resources needed from database and filters the relevant rows
             topics = Topic.objects.all().filter(booktopic__book_id = book.id)
-            skills = Skill.objects.all().filter(bookskill__book_id = book.id)
+            skills = Skill.objects.all().filter(books = book.id)
             questions = Question.objects.all().filter(book_id = book.id)
             vocabs = Vocab.objects.all().filter(bookvocab__book_id = book.id)
 
