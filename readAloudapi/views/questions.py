@@ -28,7 +28,6 @@ class Questions(ViewSet):
 
         try:
             question.save()
-            question.bookId = book.id
 
             serializer = QuestionSerializer(question, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
