@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.decorators import action
 from readAloudapi.models import Book
 from readAloudapi.models.question import Question
 
@@ -24,8 +25,11 @@ class Questions(ViewSet):
         question.question = request.data["question"]
         question.page = request.data["page"]
 
+
         try:
             question.save()
+            question.bookId = book.id
+
             serializer = QuestionSerializer(question, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ex:
@@ -44,6 +48,20 @@ class Questions(ViewSet):
             questions, many=True, context={'request':request})
         return Response(serializer.data)
 
+    @action(methods=['POST'], detail=False)
+    def get_questions_by_book(self, request):
+        """Handle GET questions by book
+
+        Returns:
+            Response -- JSON serialized list of questions
+        """
+        book = Book.objects.get(pk=request.data["bookId"])
+        questions = Question.objects.filter(book_id = book.id)
+
+
+        serializer = QuestionSerializer(questions, many=True, context={'request': request})
+
+        return Response(serializer.data)
 
     def destroy(self, request, pk=None):
 
@@ -103,4 +121,4 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields =('id', 'question', 'page', 'book')
+        fields =('id', 'question', 'page', 'book', 'bookId')

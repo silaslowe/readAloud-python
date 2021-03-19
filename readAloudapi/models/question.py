@@ -5,3 +5,10 @@ class Question(models.Model):
     question = models.CharField(max_length=150)
     page = models.CharField(max_length=3)
     
+    @property
+    def bookId(self):
+        return self.__bookId
+
+    @bookId.setter
+    def bookId(self, value):
+        self.__bookId = value
