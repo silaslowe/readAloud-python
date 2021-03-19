@@ -3,21 +3,21 @@
     "model": "readAloudapi.skill",
     "pk": 1,
     "fields": {
-      "skill": "Senses"
+      "skill": "senses"
     }
   },
   {
     "model": "readAloudapi.skill",
     "pk": 2,
     "fields": {
-      "skill": "Colors"
+      "skill": "solors"
     }
   },
   {
     "model": "readAloudapi.skill",
     "pk": 3,
     "fields": {
-      "skill": "Letter Identification"
+      "skill": "letter identification"
     }
   },
   {

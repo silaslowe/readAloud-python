@@ -3,21 +3,21 @@
     "model": "readAloudapi.topic",
     "pk": 1,
     "fields": {
-      "topic": "Trees"
+      "topic": "trees"
     }
   },
   {
     "model": "readAloudapi.topic",
     "pk": 2,
     "fields": {
-      "topic": "Signs"
+      "topic": "signs"
     }
   },
   {
     "model": "readAloudapi.topic",
     "pk": 3,
     "fields": {
-      "topic": "Advanced Calculus"
+      "topic": "advanced calculus"
     }
   },
   {
