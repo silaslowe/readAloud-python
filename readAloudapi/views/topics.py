@@ -42,14 +42,23 @@ class Topics(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            # Attempts to get skill from db. 
+            bookstopic = BookTopic.objects.get(topic = topic, book = book)
+
+        except BookTopic.DoesNotExist:
+
         # Creates a relationship object between the current book and the topic
-        booktopic = BookTopic()
-        booktopic.book=book
-        booktopic.topic=topic
-        booktopic.save()
 
+            booktopic = BookTopic() 
+            booktopic.book = book
+            booktopic.topic = topic
+            booktopic.save()
 
-        # Serializes the skill data to send to the client in the response 
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Serializes the topic data to send to the client in the response 
         serializer = TopicSerializer(topic, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
