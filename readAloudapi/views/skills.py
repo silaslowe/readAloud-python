@@ -40,12 +40,23 @@ class Skills(ViewSet):
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Attempts to get skill from db. 
+            bookskill = BookSkill.objects.get(skill=skill, book = book)
+
+        except BookSkill.DoesNotExist:
+
+            # Creates a relationship object between the current book and the skill
+
+            bookskill = BookSkill() 
+            bookskill.book = book
+            bookskill.skill = skill
+            bookskill.save()
+
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Creates a relationship object between the current book and the skill
-        bookskill = BookSkill() 
-        bookskill.book = book
-        bookskill.skill = skill
-        bookskill.save()
 
         # Serializes the skill data to send to the client in the response    
         serializer = SkillSerializer(skill, context={'request': request})
