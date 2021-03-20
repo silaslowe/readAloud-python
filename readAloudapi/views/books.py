@@ -1,4 +1,5 @@
 """View module for handling requests about games"""
+import json
 from readAloudapi.models.book import Book
 from django.core.exceptions import ValidationError
 from rest_framework import status
@@ -187,15 +188,45 @@ class Books(ViewSet):
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
+        searched_title = self.request.query_params.get('title', None)
+
 
         if searched_skill is not None:
-            skill = Skill.objects.get(skill = searched_skill)
-            books = books.filter(skills__skill = skill)
+            try:
+                skill = Skill.objects.get(skill = searched_skill)
+                books = books.filter(skills__skill = skill)
+
+            except Book.DoesNotExist as ex:
+                books = None
+                return Response(books, status=status.HTTP_404_NOT_FOUND)
+            except Exception:
+                books = None
+                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
         
         if searched_topic is not None:
-            topic = Topic.objects.get(topic = searched_topic)
-            books = books.filter(topic__topic = topic)
 
+            try:        
+                topic = Topic.objects.get(topic = searched_topic)
+                books = books.filter(topic__topic = topic)
+
+            except Book.DoesNotExist as ex:
+                books = None
+                return Response(books, status=status.HTTP_404_NOT_FOUND)
+            except Exception:
+                books = None
+                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        if searched_title is not None:
+            try:
+
+                books = books.filter(title__contains=searched_title)
+
+            except Book.DoesNotExist as ex:
+                books = None
+                return Response(books, status=status.HTTP_404_NOT_FOUND)
+            except Exception:
+                books = None
+                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
 
         books = BookSerializer(books, many=True, context={'request': request})
 

@@ -28,7 +28,6 @@ class Questions(ViewSet):
 
         try:
             question.save()
-            question.bookId = book.id
 
             serializer = QuestionSerializer(question, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -48,14 +47,14 @@ class Questions(ViewSet):
             questions, many=True, context={'request':request})
         return Response(serializer.data)
 
-    @action(methods=['POST'], detail=False)
-    def get_questions_by_book(self, request):
+    @action(methods=['GET'], detail=True)
+    def get_questions_by_book(self, request, pk=None):
         """Handle GET questions by book
 
         Returns:
             Response -- JSON serialized list of questions
         """
-        book = Book.objects.get(pk=request.data["bookId"])
+        book = Book.objects.get(pk=pk)
         questions = Question.objects.filter(book_id = book.id)
 
 
@@ -105,6 +104,8 @@ class Questions(ViewSet):
         #ORM for PUT method
 
         question.save()
+
+        # serializer  = QuestionSerializer(question, many=True, context={'request':request})
 
         # 204 status code means everything worked but the
         # server is not sending back any data in the response
