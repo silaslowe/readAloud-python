@@ -83,46 +83,89 @@ class Books(ViewSet):
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-    # def list(self, request):
-    #     """Handle GET requests to books resource
+    def list(self, request):
+        """Handle GET requests to books resource
 
-    #     Returns:
-    #         Response -- JSON serialized list of books
-    #     """
+        Returns:
+            Response -- JSON serialized list of books
+        """
 
-    #     books = Book.objects.all()
-    #     book_list = []
-    #     for book in books:
+        books = Book.objects.all()
 
-    #         # Gets all resources needed from database and filters the relevant rows
-    #         topics = Topic.objects.all().filter(booktopic__book_id = book.id)
-    #         skills = Skill.objects.all().filter(bookskill__book_id = book.id)
-    #         questions = Question.objects.all().filter(book_id=book.id)
-    #         vocabs = Vocab.objects.all().filter(bookvocab__book_id=book.id)
+        searched_skill = self.request.query_params.get('skill', None)
+        searched_topic = self.request.query_params.get('topic', None)
+        searched_title = self.request.query_params.get('title', None)
 
-    #         # Serialize filtered data
-    #         question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
-    #         topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
-    #         skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
-    #         vocab_serializer = VocabSerializer(vocabs, context={'request': request}, many=True)
-    #         serializer = BookSerializer(book, context={'request': request})
+        if searched_skill is not None:
+            try:
+                skill = Skill.objects.get(skill = searched_skill)
+                books = books.filter(skills__skill = skill).distinct()
 
-    #         # Create an empty dictionary to hold copy of serialized data
-    #         d = {}
+            except Book.DoesNotExist as ex:
+                books = None
+                return Response(books, status=status.HTTP_404_NOT_FOUND)
+            except Exception:
+                books = None
+                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+        
+        if searched_topic is not None:
 
-    #         # Copy data into empty dicitonary
-    #         d.update(serializer.data)
+            try:        
+                topic = Topic.objects.get(topic = searched_topic)
+                books = books.filter(topic__topic = topic).distinct()
 
-    #         # Add each set of serialized data as a property 
-    #         d['vocab']=vocab_serializer.data
-    #         d['questions']=question_serializer.data
-    #         d['topics']=topic_serializer.data
-    #         d['skills']=skill_serializer.data
-    #         book_list.append(d)
+            except Book.DoesNotExist as ex:
+                books = None
+                return Response(books, status=status.HTTP_404_NOT_FOUND)
+            except Exception:
+                books = None
+                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        if searched_title is not None:
+            try:
+
+                books = books.filter(title__contains=searched_title).distinct()
+
+            except Book.DoesNotExist as ex:
+                books = None
+                return Response(books, status=status.HTTP_404_NOT_FOUND)
+            except Exception:
+                books = None
+                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
 
 
+        book_list = []
+        for book in books:
 
-    #     return Response(book_list)
+            # Gets all resources needed from database and filters the relevant rows
+            topics = Topic.objects.all().filter(books__book_id = book.id)
+            skills = Skill.objects.all().filter(books__book_id = book.id)
+            questions = Question.objects.all().filter(book_id=book.id)
+            vocabs = Vocab.objects.all().filter(bookvocab__book_id=book.id)
+
+            # Serialize filtered data
+            question_serializer = QuestionSerializer(questions, context={'request': request}, many=True)
+            topic_serializer = TopicSerializer(topics, context={'request': request}, many=True)
+            skill_serializer = SkillSerializer(skills, context={'request': request}, many=True)
+            vocab_serializer = VocabSerializer(vocabs, context={'request': request}, many=True)
+            serializer = BookSerializer(book, context={'request': request})
+
+           
+            # Create an empty dictionary to hold copy of serialized data
+            d = {}
+
+            # Copy data into empty dicitonary
+            d.update(serializer.data)
+
+            # Add each set of serialized data as a property 
+            d['vocab']=vocab_serializer.data
+            d['questions']=question_serializer.data
+            d['topics']=topic_serializer.data
+            d['skills']=skill_serializer.data
+            
+            book_list.append(d)
+
+        return Response(book_list)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single book
@@ -242,7 +285,7 @@ class VocabSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vocab
-        fields = ('id', 'word', 'page', 'definition') 
+        fields = ('id', 'word', 'page', 'definition', 'notes') 
 
 class QuestionSerializer(serializers.ModelSerializer):
     """JSON serializer for topics
