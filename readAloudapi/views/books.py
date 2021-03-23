@@ -184,6 +184,12 @@ class Books(ViewSet):
 
 
             book = Book.objects.get(pk=pk)
+            profile = Profile.objects.get(user=request.auth.user) 
+
+            if book.profile_id == profile.id:
+                book.is_current_user = True
+            else:
+                book.is_current_user = False
             # Get all topics, filter to join booktopic on topic id = F(gets the topics that are in use or attached to a book) =>   
             # .filter(booktopic__topic_id=F('id'))
 
@@ -234,8 +240,6 @@ class Books(ViewSet):
         all_user_books = Book.objects.filter(bookprofile__profile = profile)
 
         books = user_books | all_user_books
-
-
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
