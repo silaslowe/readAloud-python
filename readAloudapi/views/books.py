@@ -235,10 +235,7 @@ class Books(ViewSet):
 
         books = user_books | all_user_books
 
-        # for book in user_books:
-        #     books.append(book)
-        # for book in all_user_books:
-        #     books.append(book)
+
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
@@ -282,7 +279,6 @@ class Books(ViewSet):
 
                 books = filter(title_filter, books)
 
-                # books = books.filter(title__contains=searched_title)
 
             except Book.DoesNotExist as ex:
                 books = None
@@ -290,8 +286,14 @@ class Books(ViewSet):
             except Exception:
                 books = None
                 return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+        
+        for book in books:
+            if book.profile_id == profile.id:
+                book.is_current_user = True
+            else:
+                book.is_current_user = False
 
-        books = ProfileBookSerializer(books, many=True, context={'request': request})
+        books = BookSerializer(books, many=True, context={'request': request})
 
         return Response(books.data)
 
@@ -388,7 +390,7 @@ class ProfileBookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ('id', 'title', 'author', 'publish_year', 'notes', 'cover_url', 'rating', 'location', 'synopsis', 'profile')
+        fields = ('id', 'title', 'author', 'publish_year', 'notes', 'cover_url', 'rating', 'location', 'synopsis', 'profile', 'is_current_user')
         depth = 1
 
 
@@ -398,8 +400,8 @@ class BookSerializer(serializers.ModelSerializer):
     Arguments:
         serializer type
     """
-    
+
     class Meta:
         model = Book
-        fields = ('id', 'title', 'author', 'publish_year', 'notes', 'cover_url', 'rating', 'location', 'synopsis')
+        fields = ('id', 'title', 'author', 'publish_year', 'notes', 'cover_url', 'rating', 'location', 'synopsis', 'is_current_user')
         depth = 1
