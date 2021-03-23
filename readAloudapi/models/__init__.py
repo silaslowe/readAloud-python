@@ -9,3 +9,4 @@ from .skill import Skill
 from .book_skill import BookSkill
 from .subscription import Subscription
 from .comment import Comment
+from .book_profile import BookProfile
