@@ -89,8 +89,14 @@ class Books(ViewSet):
         Returns:
             Response -- JSON serialized list of books
         """
+        books =[]
+        profile = Profile.objects.get(user=request.auth.user) 
+        books = Book.objects.exclude(profile = profile)
 
-        books = Book.objects.all()
+        # for book in all_books:
+        #     if book.profile_id != profile.id:
+        #         books.append(book)
+
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
@@ -99,20 +105,20 @@ class Books(ViewSet):
         if searched_skill is not None:
             try:
                 skill = Skill.objects.get(skill = searched_skill)
-                books = books.filter(skills__skill = skill).distinct()
+                books = books.filter(skills__skill = skill)
 
             except Book.DoesNotExist as ex:
                 books = None
                 return Response(books, status=status.HTTP_404_NOT_FOUND)
-            except Exception:
-                books = None
-                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+            # except Exception:
+            #     books = None
+            #     return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
         
         if searched_topic is not None:
 
             try:        
                 topic = Topic.objects.get(topic = searched_topic)
-                books = books.filter(topic__topic = topic).distinct()
+                books = books.filter(topic__topic = topic)
 
             except Book.DoesNotExist as ex:
                 books = None
@@ -124,7 +130,7 @@ class Books(ViewSet):
         if searched_title is not None:
             try:
 
-                books = books.filter(title__contains=searched_title).distinct()
+                books = books.filter(title__contains=searched_title)
 
             except Book.DoesNotExist as ex:
                 books = None
