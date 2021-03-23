@@ -46,6 +46,8 @@ class Topics(ViewSet):
             # Attempts to get skill from db. 
             bookstopic = BookTopic.objects.get(topic = topic, book = book)
 
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
         except BookTopic.DoesNotExist:
 
         # Creates a relationship object between the current book and the topic

@@ -1,0 +1,42 @@
+[
+  {
+    "model": "readAloudapi.bookuser",
+    "pk": 1,
+    "fields": {
+      "book": 3,
+      "profile": 2
+    }
+  },
+  {
+    "model": "readAloudapi.bookuser",
+    "pk": 2,
+    "fields": {
+      "book": 5,
+      "profile": 2
+    }
+  },
+  {
+    "model": "readAloudapi.bookuser",
+    "pk": 3,
+    "fields": {
+      "book": 1,
+      "profile": 3
+    }
+  },
+  {
+    "model": "readAloudapi.bookuser",
+    "pk": 4,
+    "fields": {
+      "book": 3,
+      "profile": 3
+    }
+  },
+  {
+    "model": "readAloudapi.bookuser",
+    "pk": 5,
+    "fields": {
+      "book": 8,
+      "profile": 2
+    }
+  }
+]

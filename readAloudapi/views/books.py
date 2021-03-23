@@ -10,7 +10,7 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.decorators import action
 from django.db.models import F
-from readAloudapi.models import Profile, Topic, Skill, Question, Vocab, book_topic, book_skill, Book, BookSkill
+from readAloudapi.models import Profile, Topic, Skill, Question, Vocab, book_topic, book_skill, Book, BookSkill, BookProfile
 
 
 class Books(ViewSet):
@@ -280,6 +280,31 @@ class Books(ViewSet):
         books = BookSerializer(books, many=True, context={'request': request})
 
         return Response(books.data)
+
+    @action(methods=['POST'], detail=True)
+    def book_profile_rel(self, request, pk=None):
+
+        book = Book.objects.get(pk=pk)
+        profile = Profile.objects.get(user=request.auth.user)
+
+        try:
+            book_profile = BookProfile.objects.get(book=book, profile=profile)
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except BookProfile.DoesNotExist:
+
+            # Creates a relationship object between the current book and the skill
+
+            book_profile = BookProfile() 
+            book_profile.book = book
+            book_profile.profile = profile
+            book_profile.save()
+
+            return Response({}, status=status.HTTP_201_CREATED)
+
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VocabSerializer(serializers.ModelSerializer):
