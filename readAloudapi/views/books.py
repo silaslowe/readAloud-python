@@ -92,6 +92,9 @@ class Books(ViewSet):
         books =[]
         profile = Profile.objects.get(user=request.auth.user) 
         books = Book.objects.exclude(profile = profile)
+        books = books.exclude(bookprofile__profile = profile)
+
+
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
