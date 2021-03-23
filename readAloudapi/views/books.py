@@ -10,7 +10,7 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.decorators import action
 from django.db.models import F
-from readAloudapi.models import Profile, Topic, Skill, Question, Vocab, book_topic, book_skill, Book, BookSkill, BookProfile
+from readAloudapi.models import Profile, Topic, Skill, Question, Vocab, book_profile, book_topic, book_skill, Book, BookSkill, BookProfile
 
 
 class Books(ViewSet):
@@ -92,11 +92,6 @@ class Books(ViewSet):
         books =[]
         profile = Profile.objects.get(user=request.auth.user) 
         books = Book.objects.exclude(profile = profile)
-
-        # for book in all_books:
-        #     if book.profile_id != profile.id:
-        #         books.append(book)
-
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
@@ -233,7 +228,17 @@ class Books(ViewSet):
 
         profile = Profile.objects.get(user=request.auth.user)
 
-        books = Book.objects.filter(profile_id = profile.id)
+        # books =[]
+
+        user_books = Book.objects.filter(profile_id = profile.id)
+        all_user_books = Book.objects.filter(bookprofile__profile = profile)
+
+        books = user_books | all_user_books
+
+        # for book in user_books:
+        #     books.append(book)
+        # for book in all_user_books:
+        #     books.append(book)
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
@@ -241,9 +246,12 @@ class Books(ViewSet):
 
 
         if searched_skill is not None:
+            
             try:
+
                 skill = Skill.objects.get(skill = searched_skill)
                 books = books.filter(skills__skill = skill)
+
 
             except Book.DoesNotExist as ex:
                 books = None
@@ -267,8 +275,14 @@ class Books(ViewSet):
 
         if searched_title is not None:
             try:
+                def title_filter(book):
+                    if searched_title in book.title:
+                        return True
+                    return False
 
-                books = books.filter(title__contains=searched_title)
+                books = filter(title_filter, books)
+
+                # books = books.filter(title__contains=searched_title)
 
             except Book.DoesNotExist as ex:
                 books = None
@@ -277,7 +291,7 @@ class Books(ViewSet):
                 books = None
                 return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
 
-        books = BookSerializer(books, many=True, context={'request': request})
+        books = ProfileBookSerializer(books, many=True, context={'request': request})
 
         return Response(books.data)
 
@@ -305,6 +319,17 @@ class Books(ViewSet):
 
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+class ProfileSerializer(serializers.ModelSerializer):
+    """JSON serializer for topics
+
+    Arguments:
+        serializer type
+    """ 
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'user') 
 
 
 class VocabSerializer(serializers.ModelSerializer):
@@ -350,6 +375,21 @@ class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = ('id', 'skill') 
+
+class ProfileBookSerializer(serializers.ModelSerializer):
+    """JSON serializer for books
+
+    Arguments:
+    serializer type
+    """
+
+    profile = ProfileSerializer(many=False)
+ 
+
+    class Meta:
+        model = Book
+        fields = ('id', 'title', 'author', 'publish_year', 'notes', 'cover_url', 'rating', 'location', 'synopsis', 'profile')
+        depth = 1
 
 
 class BookSerializer(serializers.ModelSerializer):
