@@ -94,8 +94,6 @@ class Books(ViewSet):
         books = Book.objects.exclude(profile = profile)
         books = books.exclude(bookprofile__profile = profile)
 
-
-
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
         searched_title = self.request.query_params.get('title', None)
@@ -140,7 +138,10 @@ class Books(ViewSet):
 
         book_list = []
         for book in books:
-
+            if book.profile_id == profile.id:
+                book.is_current_user = True
+            else:
+                book.is_current_user = False
             # Gets all resources needed from database and filters the relevant rows
             topics = Topic.objects.all().filter(books__book_id = book.id)
             skills = Skill.objects.all().filter(books__book_id = book.id)
