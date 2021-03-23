@@ -11,3 +11,10 @@ class Book(models.Model):
     location = models.CharField(max_length=50)
     synopsis = models.TextField(max_length=500)
 
+    @property
+    def is_current_user(self):
+        return self.__is_current_user
+
+    @is_current_user.setter
+    def is_current_user(self, value):
+        self.__is_current_user = value
