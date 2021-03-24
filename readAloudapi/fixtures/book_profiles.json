@@ -1,6 +1,6 @@
 [
   {
-    "model": "readAloudapi.bookuser",
+    "model": "readAloudapi.bookprofile",
     "pk": 1,
     "fields": {
       "book": 3,
@@ -8,7 +8,7 @@
     }
   },
   {
-    "model": "readAloudapi.bookuser",
+    "model": "readAloudapi.bookprofile",
     "pk": 2,
     "fields": {
       "book": 5,
@@ -16,7 +16,7 @@
     }
   },
   {
-    "model": "readAloudapi.bookuser",
+    "model": "readAloudapi.bookprofile",
     "pk": 3,
     "fields": {
       "book": 1,
@@ -24,7 +24,7 @@
     }
   },
   {
-    "model": "readAloudapi.bookuser",
+    "model": "readAloudapi.bookprofile",
     "pk": 4,
     "fields": {
       "book": 3,
@@ -32,11 +32,11 @@
     }
   },
   {
-    "model": "readAloudapi.bookuser",
+    "model": "readAloudapi.bookprofile",
     "pk": 5,
     "fields": {
       "book": 1,
-      "profile": 3
+      "profile": 2
     }
   }
 ]
