@@ -241,10 +241,12 @@ class Books(ViewSet):
         # books =[]
 
         user_books = Book.objects.filter(profile_id = profile.id)
-        all_user_books = Book.objects.filter(bookprofile__profile = profile)
+        all_user_books = Book.objects.filter(profile__profile = profile)
+        print(user_books)
+        print(all_user_books)
 
         books = user_books | all_user_books
-
+        print(books)
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
         searched_title = self.request.query_params.get('title', None)
@@ -256,6 +258,7 @@ class Books(ViewSet):
 
                 skill = Skill.objects.get(skill = searched_skill)
                 books = books.filter(skills__skill = skill)
+                print(books)
 
 
             except Book.DoesNotExist as ex:
