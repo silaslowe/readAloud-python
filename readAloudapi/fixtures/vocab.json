@@ -5,25 +5,34 @@
     "fields": {
       "word": "tall",
       "definition": "Something that is tall; unshort",
-      "notes": ""
+      "notes": "Use a see, touch, and say approach by holding up items and asking children to identify them as short or tall. On a second round, use the reference chart to teach children the meaning of shorter and taller. "
     }
   },
   {
     "model": "readAloudapi.vocab",
     "pk": 2,
     "fields": {
-      "word": "dog",
-      "definition": "The anti-cat",
-      "notes": ""
+      "word": "short",
+      "definition": "The anti-cat, someone who plays jazz and is cool",
+      "notes": "Explain that they are comparing height. Then teach them to use the expressions shorter than and taller than."
     }
   },
   {
     "model": "readAloudapi.vocab",
     "pk": 3,
     "fields": {
-      "word": "tree",
-      "definition": "fat grass",
-      "notes": ""
+      "word": "animal",
+      "definition": "Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in ",
+      "notes": "Not all animals of a kind look the same, but they may share common characteristics — like pink, curly tails and a love for baths! In this hilarious tale, a pig with swimming trunks, a pig with a pirate flag, and many more unique pigs take part in an epic bath adventure that teaches categorizing and counting skills."
+    }
+  },
+  {
+    "model": "readAloudapi.vocab",
+    "pk": 4,
+    "fields": {
+      "word": "Tree",
+      "definition": "Tall, broad grass",
+      "notes": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
     }
   }
 ]

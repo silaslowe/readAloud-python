@@ -3,28 +3,49 @@
     "model": "readAloudapi.topic",
     "pk": 1,
     "fields": {
-      "topic": "trees"
+      "topic": "food"
     }
   },
   {
     "model": "readAloudapi.topic",
     "pk": 2,
     "fields": {
-      "topic": "signs"
+      "topic": "town"
     }
   },
   {
     "model": "readAloudapi.topic",
     "pk": 3,
     "fields": {
-      "topic": "advanced calculus"
+      "topic": "colors"
     }
   },
   {
     "model": "readAloudapi.topic",
     "pk": 4,
     "fields": {
-      "topic": "toilet"
+      "topic": "animals"
+    }
+  },
+  {
+    "model": "readAloudapi.topic",
+    "pk": 5,
+    "fields": {
+      "topic": "buildings"
+    }
+  },
+  {
+    "model": "readAloudapi.topic",
+    "pk": 6,
+    "fields": {
+      "topic": "snow"
+    }
+  },
+  {
+    "model": "readAloudapi.topic",
+    "pk": 7,
+    "fields": {
+      "topic": "letters"
     }
   }
 ]

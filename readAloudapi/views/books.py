@@ -10,6 +10,7 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.decorators import action
 from django.db.models import F
+from itertools import chain
 from readAloudapi.models import Profile, Topic, Skill, Question, Vocab, book_profile, book_topic, book_skill, Book, BookSkill, BookProfile
 
 
@@ -106,9 +107,9 @@ class Books(ViewSet):
             except Book.DoesNotExist as ex:
                 books = None
                 return Response(books, status=status.HTTP_404_NOT_FOUND)
-            # except Exception:
-            #     books = None
-            #     return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+            except Exception:
+                books = None
+                return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
         
         if searched_topic is not None:
 
@@ -238,12 +239,14 @@ class Books(ViewSet):
 
         profile = Profile.objects.get(user=request.auth.user)
 
-        # books =[]
+        books =[]
 
         user_books = Book.objects.filter(profile_id = profile.id)
         all_user_books = Book.objects.filter(bookprofile__profile = profile)
 
-        books = user_books | all_user_books
+        # books = user_books | all_user_books
+
+        # books = chain(user_books, all_user_books)
 
         searched_skill = self.request.query_params.get('skill', None)
         searched_topic = self.request.query_params.get('topic', None)
@@ -255,13 +258,13 @@ class Books(ViewSet):
             try:
 
                 skill = Skill.objects.get(skill = searched_skill)
-                books = books.filter(skills__skill = skill)
-
+                user_books = user_books.filter(skills__skill = skill)
+                all_user_books = all_user_books.filter(skills__skill = skill)
 
             except Book.DoesNotExist as ex:
                 books = None
                 return Response(books, status=status.HTTP_404_NOT_FOUND)
-            except Exception:
+            except Exception as ex:
                 books = None
                 return Response(books, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
         
@@ -269,7 +272,9 @@ class Books(ViewSet):
 
             try:        
                 topic = Topic.objects.get(topic = searched_topic)
-                books = books.filter(topic__topic = topic)
+                user_books = user_books.filter(topic__topic = topic)
+                all_user_books = all_user_books.filter(topic__topic = topic)
+
 
             except Book.DoesNotExist as ex:
                 books = None
@@ -280,12 +285,19 @@ class Books(ViewSet):
 
         if searched_title is not None:
             try:
-                def title_filter(book):
-                    if searched_title in book.title:
-                        return True
-                    return False
+                # def title_filter(book):
+                #     if searched_title in book.title:
+                #         return True
+                #     return False
+                user_books = user_books.filter(title__contains=searched_title)
+                all_user_books = all_user_books.filter(title__contains=searched_title)
 
-                books = filter(title_filter, books)
+                # user_books = user_books.filter(title_filter, user_books)
+                # all_user_books = all_user_books.filter(title_filter, all_user_books)    
+    
+
+                # user_books = user_books.filter(title = searched_title)
+                # all_user_books = all_user_books.filter(title = searched_title)
 
 
             except Book.DoesNotExist as ex:
@@ -300,6 +312,8 @@ class Books(ViewSet):
                 book.is_current_user = True
             else:
                 book.is_current_user = False
+
+        books = user_books.union(all_user_books)
 
         books = BookSerializer(books, many=True, context={'request': request})
 

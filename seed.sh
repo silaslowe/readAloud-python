@@ -20,6 +20,7 @@ python3 manage.py loaddata book_skills
 python3 manage.py loaddata book_topics
 python3 manage.py loaddata book_vocabs
 python3 manage.py loaddata questions
+python3 manage.py loaddata book_profiles
 python3 manage.py loaddata comments
 
 

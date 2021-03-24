@@ -7,7 +7,7 @@
       "title": "The Hungry Thing",
       "author": "Jan Slepian, Ann Seidler",
       "publish_year": 1968,
-      "notes": "This is a book beyond any reasonable doubt",
+      "notes": "Proin sed volutpat leo. Sed sit amet viverra est, vestibulum pretium velit. Sed nisi eros, hendrerit at finibus vitae, efficitur non nunc. Nullam neque ipsum, ultricies id consectetur in, gravida et ligula. Praesent sapien ligula, viverra at dignissim in, venenatis finibus diam. Pellentesque ac interdum diam. Duis pharetra venenatis dapibus. Nam fringilla finibus orci, at pretium eros lobortis quis. Cras posuere, lectus ut malesuada feugiat, sem augue dictum lacus, quis facilisis ligula nulla non erat. Suspendisse sodales dui at augue aliquet, id ult, consectetur adipiscing elit.",
       "cover_url": "http://covers.openlibrary.org/b/olid/OL24210262M-L.jpg",
       "rating": 5,
       "location": "library"
@@ -21,7 +21,7 @@
       "title": "is it red? is it yelow? is it blue",
       "author": "Tana Hoban",
       "publish_year": 1972,
-      "notes": "This is a book about colors",
+      "notes": "Proin sed volutpat leo. Sed sit amet viverra est, vestibulum pretium velit. Sed nisi eros, hendrerit at finibus vitae, efficitur non nunc. Nullam neque ipsum, ultricies id consectetur in, gravida et ligula. Praesent sapien ligula, viverra at dignissim in, venenatis finibus diam. Pellentesque ac interdum diam. Duis pharetra venenatis dapibus. Nam fringilla finibus orci, at pretium eros lobortis quis. Cras posuere, lectus ut malesuada feugiat, sem augue dictum lacus, quis facilisis ligula nulla non erat. Suspendisse sodales dui at augue aliquet, id ultrices orci pretium. Praesent posuere sem et euismod luctus. Morbi at orci a orci sollicitudin malesuada et vitae purus. Donec at dignissim orci, vitae ornare tortor. Proin elementum mi odio, a sollicitudin leo gravida ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "cover_url": "http://covers.openlibrary.org/b/olid/OL4716156M-L.jpg",
       "rating": 4,
       "location": "house"
@@ -35,9 +35,135 @@
       "title": "Of colors and things",
       "author": "Tana Hoban",
       "publish_year": 1970,
-      "notes": "This is a book about colors and things",
+      "notes": "Proin sed volutpat leo. Sed sit amet viverra est, vestibulum pretium velit. Sed nisi eros, hendrerit at finibus vitae, efficitur non nunc. Nullam neque ipsum, ultricies id consectetur inaesent posuere sem et euismod luctus. Morbi at orci a orci sollicitudin malesuada et vitae purus. Donec at dignissim orci, vitae ornare tortor. Proin elementum mi odio, a sollicitudin leo gravida ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "cover_url": "http://covers.openlibrary.org/b/olid/OL496249M-L.jpg",
       "rating": 5,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 4,
+    "fields": {
+      "profile": 1,
+      "title": "The Three Little Pigs",
+      "author": "Brenda Parks",
+      "publish_year": 1970,
+      "notes": "Write the following events on the board: Three little pigs decided to leave their home; The first pig chose to build his home out of straw; He built his house and sat down to eat his lunch of pea soup, salad, and bread; A hungry wolf knocked on his door; He demanded to be let in, but the pig refused; The wolf inhaled deeply; He blew the house down; All that remained was a haystack; The little pig went to his brother's house. Discuss and circle the events that are the most important to correctly tell the story. ",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL9562963M-L.jpg",
+      "rating": 5,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 5,
+    "fields": {
+      "profile": 1,
+      "title": "Three Little Pigs",
+      "author": "Steven Kellogg",
+      "publish_year": 1970,
+      "notes": "Write the following events on the board: Three little pigs decided to leave their home; The first pig chose to build his home out of straw; He built his house and sat down to eat his lunch of pea soup, salad, and bread; A hungry wolf knocked on his door; He demanded to be let in, but the pig refused; The wolf inhaled deeply; He blew the house down; All that remained was a haystack; The little pig went to his brother's house.Discuss and circle the events that are the most important to correctly tell the story. ",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL995801M-L.jpg",
+      "rating": 5,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 6,
+    "fields": {
+      "profile": 1,
+      "title": "The three snow bears",
+      "author": "Jan Brett",
+      "publish_year": 1980,
+      "notes": "cursus nulla et euismod. Nullam faucibus condimentum libero, in malesuada leo vehicula nec. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer molestie quis libero ac dapibus. Vivamus pulvinar semper molestie. Donec condimentum velit quis massa dapibus lobortis. Ut id mollis justo, eu tempor ex. Curabitur facilisis felis ullamcorper lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent facilisis, dui at accumsan feugiat, augue elit ultrices neque, sed faucibus mi quam ",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL7471679M-L.jpg",
+      "rating": 5,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 7,
+    "fields": {
+      "profile": 2,
+      "title": "The Three Bears",
+      "author": "Byron Barton",
+      "publish_year": 1982,
+      "notes": "cursus nulla et euismod. Nullam faucibus condimentum libero, in malesuada leo vehicula nec. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer quis libero ac dapibus. Vivamus pulvinar semper . Donec condimentum velit quis massa dapibus lobortis. Ut id mollis justo, eu tempor ex. Curabitur facilisis felis ullamcorper lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent facilisis, dui at accumsan feugiat, augue elit ultrices neque, sed faucibus mi quam ",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL1882409M-L.jpg",
+      "rating": 4,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 8,
+    "fields": {
+      "profile": 2,
+      "title": "The Little Red Hen",
+      "author": "Paul Galdone",
+      "publish_year": 1972,
+      "notes": "cursus nulla et euismod. Nullam faucibus condimentum libero, in malesuada leo vehicula nec. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer molestie quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent facilisis, dui at accumsan feugiat, augue elit ultrices neque, sed faucibus mi quam  molestie quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent fac",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL8274789M-L.jpg",
+      "rating": 4,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 9,
+    "fields": {
+      "profile": 2,
+      "title": "Very Far Away",
+      "author": "Maurice Sendak",
+      "publish_year": 1968,
+      "notes": "cursus nulla et euismod. Nullam faucibus condimentum libero, in malesuada leo vehicula nec. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer molestie quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent facilisis, dui at accumsan feugiat, augue elit ultrices neque, sed faucibus mi quam  molestie quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent fac",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL9622248M-L.jpg",
+      "rating": 4,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 10,
+    "fields": {
+      "profile": 2,
+      "title": "Alligators All Around",
+      "author": "Maurice Sendak",
+      "publish_year": 1980,
+      "notes": "orci luctus et ultrices posuere cubilia curae; Integer  quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum tcursus nulla et euismod. Nullam faucibus condimentum libero, in malesuada leo vehicula nec. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer  quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent facilisis, dui at accumsan feugiat, augue elit ultrices neque, senar semper molr lorem consequat, a laoreet urna pulvinar.  mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent fac",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL5852690M-L.jpg",
+      "rating": 2,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 11,
+    "fields": {
+      "profile": 3,
+      "title": "Math wizardry for kids",
+      "author": "Margaret Kenda",
+      "publish_year": 1980,
+      "notes": "orci luctus et ultrices posuere cubilia curae; Integer  quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum tcursus nulla et euismod. Nullam faucibus condimentum libero, in malesuada leo vehicula nec. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer molestie quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent facilisis, dui at accumsan feugiat, augue elit ultrices neque, senar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent fac",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL24748134M-L.jpg",
+      "rating": 3,
+      "location": "school"
+    }
+  },
+  {
+    "model": "readAloudapi.book",
+    "pk": 12,
+    "fields": {
+      "profile": 3,
+      "title": "Essential Maths",
+      "author": "Sean McArdle",
+      "publish_year": 1980,
+      "notes": "orci luctus et ultrices posuere cubilia curae; Integer  quis libero ac dapibus. Vivamus pulvinar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum tcurs molestie quis libero ac dapibus. Vivamus pulvinar semper imentum turpis, quis aliquet ipsum hendrerit at. Praesent facilisis, dui at accumsan feugiat, augue elit ultrices neque, senar semper molr lorem consequat, a laoreet urna pulvinar. Phasellus mattis condimentum turpis, quis aliquet ipsum hendrerit at. Praesent fac",
+      "cover_url": "http://covers.openlibrary.org/b/olid/OL10762324M-L.jpg",
+      "rating": 4,
       "location": "school"
     }
   }

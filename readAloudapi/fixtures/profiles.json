@@ -5,7 +5,27 @@
     "fields": {
       "user": 1,
       "role": "teacher",
-      "bio": "Sad sad teacher. Sad",
+      "bio": "I work at NSS and that's pretty rad",
+      "profile_pic": ""
+    }
+  },
+  {
+    "model": "readAloudapi.profile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "role": "teacher",
+      "bio": "I work as an EC teacher at Serenity Now! early learning center",
+      "profile_pic": ""
+    }
+  },
+  {
+    "model": "readAloudapi.profile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "role": "teacher",
+      "bio": "i coordinate early learning centers in the city of Nashville.",
       "profile_pic": ""
     }
   }
