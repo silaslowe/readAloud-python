@@ -35,8 +35,8 @@
     "model": "readAloudapi.bookuser",
     "pk": 5,
     "fields": {
-      "book": 8,
-      "profile": 2
+      "book": 1,
+      "profile": 3
     }
   }
 ]

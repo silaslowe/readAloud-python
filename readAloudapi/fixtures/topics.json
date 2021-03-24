@@ -31,14 +31,14 @@
     "model": "readAloudapi.topic",
     "pk": 5,
     "fields": {
-      "topic": "animals"
+      "topic": "buildings"
     }
   },
   {
     "model": "readAloudapi.topic",
     "pk": 6,
     "fields": {
-      "topic": "animals"
+      "topic": "snow"
     }
   },
   {
