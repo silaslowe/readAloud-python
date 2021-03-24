@@ -31,7 +31,7 @@
     "model": "readAloudapi.skill",
     "pk": 5,
     "fields": {
-      "skill": "SEL"
+      "skill": "sel"
     }
   },
   {
