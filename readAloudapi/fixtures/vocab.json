@@ -5,7 +5,7 @@
     "fields": {
       "word": "tall",
       "definition": "Something that is tall; unshort",
-      "notes": ""
+      "notes": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     }
   },
   {
@@ -13,17 +13,26 @@
     "pk": 2,
     "fields": {
       "word": "dog",
-      "definition": "The anti-cat",
-      "notes": ""
+      "definition": "The anti-cat, someone who plays jazz and is cool",
+      "notes": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     }
   },
   {
     "model": "readAloudapi.vocab",
     "pk": 3,
     "fields": {
-      "word": "tree",
-      "definition": "fat grass",
-      "notes": ""
+      "word": "animal",
+      "definition": "Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in ",
+      "notes": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris a pariatur."
+    }
+  },
+  {
+    "model": "readAloudapi.vocab",
+    "pk": 4,
+    "fields": {
+      "word": "Tree",
+      "definition": "Tall, broad grass",
+      "notes": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
     }
   }
 ]

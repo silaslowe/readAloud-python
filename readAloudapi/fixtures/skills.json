@@ -3,28 +3,56 @@
     "model": "readAloudapi.skill",
     "pk": 1,
     "fields": {
-      "skill": "senses"
+      "skill": "rhyming"
     }
   },
   {
     "model": "readAloudapi.skill",
     "pk": 2,
     "fields": {
-      "skill": "solors"
+      "skill": "retell"
     }
   },
   {
     "model": "readAloudapi.skill",
     "pk": 3,
     "fields": {
-      "skill": "letter identification"
+      "skill": "colors"
     }
   },
   {
     "model": "readAloudapi.skill",
     "pk": 4,
     "fields": {
-      "skill": "Numeracy"
+      "skill": "math"
+    }
+  },
+  {
+    "model": "readAloudapi.skill",
+    "pk": 5,
+    "fields": {
+      "skill": "SEL"
+    }
+  },
+  {
+    "model": "readAloudapi.skill",
+    "pk": 6,
+    "fields": {
+      "skill": "distance"
+    }
+  },
+  {
+    "model": "readAloudapi.skill",
+    "pk": 7,
+    "fields": {
+      "skill": "counting"
+    }
+  },
+  {
+    "model": "readAloudapi.skill",
+    "pk": 8,
+    "fields": {
+      "skill": "letter id"
     }
   }
 ]
